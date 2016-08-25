@@ -3,6 +3,13 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      options: {
+        separator: ';',
+      },
+      dist: {
+        src: ['./public/client/*.js'],
+        dest: './public/client/script.js'
+      }
     },
 
     mochaTest: {
@@ -51,7 +58,13 @@ module.exports = function(grunt) {
 
     shell: {
       prodServer: {
-      }
+        command: 'git push live master',
+        options: {
+          stdout: true,
+          stderr: true,
+          failOnError: true
+        }
+      }, 
     },
   });
 
