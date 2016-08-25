@@ -28,6 +28,11 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      my_target: {
+        files: {
+          './public/client/uglified.js': ['./public/client/script.js']
+        }
+      }
     },
 
     eslint: {
