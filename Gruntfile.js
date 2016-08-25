@@ -4,11 +4,12 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     concat: {
       options: {
-        separator: ';',
+        separator: '\n',
       },
       dist: {
         src: ['./public/client/*.js'],
-        dest: './public/client/script.js'
+        //exclude uglify
+        dest: './public/deploy/script.js'
       }
     },
 
@@ -30,7 +31,7 @@ module.exports = function(grunt) {
     uglify: {
       my_target: {
         files: {
-          './public/client/uglified.js': ['./public/client/script.js']
+          './public/deploy/uglified.js': ['./public/deploy/script.js']
         }
       }
     },
@@ -38,6 +39,7 @@ module.exports = function(grunt) {
     eslint: {
       target: [
         // Add list of files to lint here
+        './public/client/*.js'
       ]
     },
 
@@ -52,7 +54,8 @@ module.exports = function(grunt) {
         ],
         tasks: [
           'concat',
-          'uglify'
+          'uglify',
+          'eslint'
         ]
       },
       css: {
@@ -95,11 +98,13 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
+    'eslint', 'test', 'concat', 'uglify'
   ]);
 
   grunt.registerTask('upload', function(n) {
     if (grunt.option('prod')) {
       // add your production server task here
+      grunt.task.run(['shell:prodServer']);
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
@@ -107,7 +112,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('deploy', [
     // add your deploy tasks here
-    'build', 'concat', 'uglify', 'eslint', 'mochaTest', 'watch'
+    'build', 'upload'
   ]);
 
 
