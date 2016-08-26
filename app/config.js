@@ -1,6 +1,11 @@
 var path = require('path');
+var bcrypt = require('bcrypt-nodejs');
+var Promise = require('bluebird');
+// mongoose.Promise = require('bluebird');
 
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
 mongoose.connect('mongodb://localhost/shortly');
 
 var db = mongoose.connection;
@@ -9,8 +14,8 @@ db.once('open', function() {
   console.log('We are in here! WOOO!');
 });
 
-
 module.exports = db;
+
 
 
 
